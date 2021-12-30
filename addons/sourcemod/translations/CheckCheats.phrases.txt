@@ -1,0 +1,346 @@
+"Phrases"
+{
+	"AdminMenuCategoryName"
+	{
+		"ru"		"Проверка на читы"
+		"en"		"Check Cheats"
+	}
+	
+	"MainMenuTitle"
+	{
+		"ru"		"Выбор действия:"
+		"en"		"Choise action:"
+	}
+	
+	"MainMenuFirstItem"
+	{
+		"ru"		"Выбор игрока"
+		"en"		"Choise player"
+	}
+	
+	"MainMenuSecondItem"
+	{
+		"ru"		"Информация о плагине"
+		"en"		"About plugin"
+	}
+	
+	"InfoFirstItem"
+	{
+		"#format"	"{1:s}"
+		
+		"ru"		"Разработчик плагина: {1}"
+		"en"		"Plugin Developer: {1}"
+	}
+	
+	"InfoSecondItem"
+	{
+		"#format"	"{1:s}"
+		
+		"ru"		"Ресурс: {1}"
+		"en"		"Source: {1}"
+	}
+	
+	"InfoThirdItem"
+	{
+		"ru"		"Назад"
+		"en"		"Back"
+	}
+	
+	"ChoosePlayerMenuTitle"
+	{
+		"ru"		"Выберите игрока:"
+		"en"		"Choose player:"
+	}
+	
+	"PlayersNotFound"
+	{
+		"ru"		"Игроки для проверки не найдены!"
+		"en"		"No players found for check!"
+	}
+	
+	"PlayerAlreadyCheck"
+	{
+		"#format"	"{1:N},{2:N}"
+		
+		"ru"		"{1}, Вы уже проверяете игрока {2}!"
+		"en"		"{1}, You are already checking player {2}!"
+	}
+	
+	"CheckPlayerLeft"
+	{
+		"#format"	"{1:N}"
+		
+		"ru"		"Проверяемый игрок {1} вышел с сервера!"
+		"en"		"The checked player {1} has left the server!"
+	}
+	
+	"CheckStartAllText"
+	{
+		"#format"	"{1:N},{2:N}"
+		
+		"ru"		"Администратор {1} вызвал на проверку игрока {2}!"
+		"en"		"Administrator {1} has called player {2} for a check!"
+	}
+	
+	"CheckStartPlayerText"
+	{
+		"#format"	"{1:N}"
+		
+		"ru"		"ВНИМАНИЕ! Администратор {1} вызвал Вас на проверку!"
+		"en"		"ATTENTION! Administrator {1} called you for a check!"
+	}
+	
+	"BlockSpecText"
+	{
+		"#format"	"{1:N}"
+		
+		"ru"		"{1}, на время проверки администратор запретил Вам вход в игру!"
+		"en"		"{1}, during the check, the administrator has forbidden you to enter the game!"
+	}
+	
+	"CheckMenuTitle"
+	{
+		"#format"	"{1:N},{2:s}"
+		
+		"ru"		"Панель проверки на читы\n \nПроверяется: {1}\n \nСтатус проверки: {2}"
+		"en"		"Check Cheats Panel\n \nChecking: {1}\n \nCheck Status: {2}"
+	}
+	
+	"CheckMenuFirstItem"
+	{
+		"#format"	"{1:s},{2:s}"
+		
+		"ru"		"Звонок был принят\n \n{1} игрока: {2}\n "
+		"en"		"Call was answered\n \n{1} player: {2}\n "
+	}
+	
+	"CheckMenuNotifyItem"
+	{
+		"ru"		"Напомнить игроку о введении данных!"
+		"en"		"Remind the player to enter data!"
+	}
+	
+	"ChooseMessengerMenuTitle"
+	{
+		"ru"		"Выберите мессенджер:"
+		"en"		"Choose messenger:"
+	}
+	
+	"CheckYourData"
+	{
+		"#format"	"{1:s}"
+		
+		"ru"		"Проверьте корректность введённых данных {1}!"
+		"en"		"Check the correctness of the entered data {1}!"
+	}
+	
+	"CheckLeaveAdmin"
+	{
+		"ru"		"Администратор покинул сервер, проверка автоматически отменена!"
+		"en"		"The administrator has left the server, the check is automatically canceled!"
+	}
+	
+	"CheckLeavePlayer"
+	{
+		"ru"		"Игрок которого Вы проверяли покинул сервер!"
+		"en"		"The player you checked has left the server!"
+	}
+	
+	"ChooseMessengerText"
+	{
+		"ru"		"Выберите мессенджер для связи с администратором!"
+		"en"		"Choose a messenger to contact the administrator!"
+	}
+	
+	"PlayerNotifyAdmin"
+	{
+		"#format"	"{1:N}"
+		
+		"ru"		"Вы успешно напомнили игроку {1} о том, что он должен ввести данные для связи!"
+		"en"		"You have successfully reminded player {1} to enter contact details!"
+	}
+	
+	"PlayerBlockSpecAdmin"
+	{
+		"#format"	"{1:N}"
+		
+		"ru"		"Вы успешно заблокировали игроку {1} переход в другие команды!"
+		"en"		"You have successfully blocked player {1} from moving to other teams!"
+	}
+	
+	"PlayerBlockSpecText"
+	{
+		"ru"		"Вам был заблокирован переход в другие команды!"
+		"en"		"You have been blocked from switching to other teams!"
+	}
+	
+	"PlayerSendedDiscordAdmin"
+	{
+		"#format"	"{1:N},{2:s}"
+		
+		"ru"		"Игрок {1} ввёл свой Discord: {2}"
+		"en"		"Player {1} entered his Discord: {2}"
+	}
+	
+	"PlayerNotifyWriteData"
+	{
+		"#format"	"{1:s}"
+		
+		"ru"		"Введите данные своего {1}!"
+	}
+	
+	"PlayerSendedDiscord"
+	{	
+		"ru"		"Вы успешно ввели свой Discord, ожидайте звонка администратора!"
+		"en"		"You have successfully entered your Discord, wait for an admin call!"
+	}
+	
+	"PlayerSendedSkypeAdmin"
+	{
+		"#format"	"{1:N},{2:s}"
+		
+		"ru"		"Игрок {1} ввёл свой Skype: {2}"
+		"en"		"Player {1} entered his Skype: {2}"
+	}
+	
+	"PlayerSendedSkype"
+	{	
+		"ru"		"Вы успешно ввели свой Skype, ожидайте звонка администратора!"
+		"en"		"You have successfully entered your Skype, wait for an admin call!"
+	}
+	
+	"DataError"
+	{
+		
+		"ru"		"В указанных данных обнаружены ошибки, попробуйте ещё раз!"
+		"en"		"Errors were found in the specified data, please try again!"
+	}
+	
+	"Status_WaitCommunication"
+	{
+		"ru"		"Ожидание ввода"
+		"en"		"Wait Enter Player Data"
+	}
+	
+	"Status_WaitDiscord"
+	{
+		"ru"		"Ожидание Discord"
+		"en"		"Wait Discord"
+	}
+	
+	"Status_WaitSkype"
+	{
+		"ru"		"Ожидание Skype"
+		"en"		"Wait Skype"
+	}
+	
+	"Status_WaitCall"
+	{
+		"ru"		"Ожидание звонка"
+		"en"		"Wait Call"
+	}
+	
+	"Status_Checking"
+	{
+		"ru"		"Ожидание окончания проверки"
+		"en"		"Waiting for the end of the check"
+	}
+	
+	"Status_Result"
+	{
+		"ru"		"Результат проверки"
+		"en"		"Checking Result"
+	}
+	
+	"CheckEnded"
+	{
+		"ru"		"Проверка окончена"
+		"en"		"Checking Ended"
+	}
+	
+	"GoodResult"
+	{
+		"ru"		"Читы не обнаружены"
+		"en"		"Cheats not found"
+	}
+	
+	"BadResult"
+	{
+		"ru"		"Обнаружены читы"
+		"en"		"Cheats found"
+	}
+	
+	"PlayerToSpec"
+	{
+		"ru"		"Переместить в наблюдатели"
+		"en"		"Move To Spectators"
+	}
+	
+	"PlayerBlockSpec"
+	{
+		"ru"		"Заблокировать переход"
+		"en"		"Block Actions"
+	}
+	
+	"EndCheckPlayer"
+	{
+		"ru"		"Принудительно окончить проверку"
+		"en"		"Finish checking"
+	}
+	
+	"PlayerToSpecAdmin"
+	{
+		"#format"	"{1:N}"
+		
+		"ru"		"Вы успешно перенесли в наблюдатели игрока {1}"
+		"en"		"You have successfully moved player {1} to spectators."
+	}
+	
+	"PlayerToSpecText"
+	{
+		"ru"		"Администратор переместил Вас в наблюдатели!"
+		"en"		"The administrator has moved you to the spectators!"
+	}
+	
+	"PlayerCheatsNotFound"
+	{
+		"ru"		"У Вас не обнаружено читов, проверка окончена, спасибо за честную игру!"
+		"en"		"No cheats were found for you, the check is over, thanks for the fair play!"
+	}
+	
+	"PlayerCheatsNotFoundAdmin"
+	{
+		"ru"		"Вы успешно завершили проверку игрока. (Читы не обнаружены)"
+		"en"		"You have successfully completed player checking. (Cheats not found)"
+	}
+	
+	"PlayerCheatsFound"
+	{
+		"ru"		"У Вас обнаружены читы, проверка окончена!"
+		"en"		"You have found cheats, the check is over!"
+	}
+	
+	"PlayerCheatsFoundAdmin"
+	{
+		"ru"		"Вы успешно завершили проверку игрока. (Читы обнаружены)"
+		"en"		"You have successfully completed player checking. (Cheats found)"
+	}
+	
+	"RefusalToCheck"
+	{
+		"ru"		"Отказать от проверки [БАН]"
+		"en"		"Refusal To Check [BAN]"
+	}
+	
+	"InteractionErrorPlayer"
+	{
+		"ru"		"Выполнение действия невозможно т.к. проверка завершена!"
+		"en"		"The action is impossible because checking completed!"
+	}
+	
+	"InteractionErrorAdmin"
+	{
+		"ru"		"Выполнение действия невозможно т.к. игрок вышел с сервера!"
+		"en"		"The action is impossible because the player left the server!"
+	}
+}
