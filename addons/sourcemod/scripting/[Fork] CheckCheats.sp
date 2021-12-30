@@ -15,9 +15,9 @@
 #define CHECKCHEATS_MAINMENU "CheckCheats_MainMenu"
 
 #define PLUGIN_NAME "[Fork] CheckCheats"
-#define PLUGIN_AUTHOR "xyligan"
+#define PLUGIN_AUTHOR "xyligan & Nico Yazawa"
 #define PLUGIN_DESCRIPTION "Плагин для проверки игроков на читы"
-#define PLUGIN_VERSION "3.2 [BETA]"
+#define PLUGIN_VERSION "3.2.1 [BETA]"
 #define PLUGIN_URL "https://hlmod.ru/resources/check-cheats-fork.3012/"
 
 enum struct player {
@@ -38,10 +38,11 @@ enum StatusCheckEnum {
 TopMenu g_hTopMenu;
 EngineVersion g_EngineVersion;
 player g_iPlayerInfo[MAXPLAYERS + 1];
-int g_iBanTime, g_iMessenger[MAXPLAYERS + 1], g_iBanEnabled, g_iWaitMessengerTime[MAXPLAYERS + 1], g_iWaitTime;
 bool g_bHideAdmins, g_bPlayerChecking[MAXPLAYERS + 1];
-ConVar g_cPluginTag, g_cHideAdmins, g_cSoundPath, g_cBanTime, g_cMessengers, g_cOverlayPath, g_cBanReason, g_cDownloadsPath, g_cBanEnabled, g_cWaitMessengerTime;
+int g_iBanTime, g_iMessenger[MAXPLAYERS + 1], g_iBanEnabled, g_iWaitMessengerTime[MAXPLAYERS + 1], g_iWaitTime;
 char g_sTag[256], g_sSoundPath[256], g_sBanSystem[256], g_sMessenger[256], g_sOverlayPath[256], g_sBanReason[256], g_sDownloadsPath[256];
+ConVar g_cPluginTag, g_cHideAdmins, g_cSoundPath, g_cBanTime, g_cMessengers, g_cOverlayPath, g_cBanReason, g_cDownloadsPath, g_cBanEnabled, g_cWaitMessengerTime;
+
 
 public Plugin myinfo = {
     name = PLUGIN_NAME,
@@ -55,7 +56,7 @@ public void OnPluginStart() {
     g_EngineVersion = GetEngineVersion();
 
     g_cPluginTag = CreateConVar("checkcheats_tag", "[CheckCheats]", "Префикс плагина в чате.");
-    g_cWaitMessengerTime = CreateConVar("checkcheats_wait_time", "1", "Время в минутах отведённое на ожидание данных игрока для связи. [0 - без лимита]");
+    g_cWaitMessengerTime = CreateConVar("checkcheats_wait_time", "10", "Время в минутах отведённое на ожидание данных игрока для связи. [0 - без лимита]");
     g_cBanEnabled = CreateConVar("checkcheats_ban_enabled", "1", "Бан игроков при наличии читов/выходе с сервера. [0 - Выключить | 1 - Включить]");
     g_cDownloadsPath = CreateConVar("checkcheats_downloads_path", "data/checkcheats/downloads.txt", "Путь к файлу загрузок плагина. [без папки addons/sourcemod]");
     g_cBanReason = CreateConVar("checkcheats_ban_reason", "Отказ пройти проверку на читы", "Причина бана игроков при отказе от проверки.");
@@ -159,8 +160,8 @@ public void OnClientDisconnect(int iClient) {
 public void OnMapStart() {
     char sFile[256], sBuffer[256], sBufferFull[256];
     
-    BuildPath(Path_SM, sFile, sizeof sFile, "data/checkcheats/downloads.txt");
-    File hFile = OpenFile(sFile, "r");
+    BuildPath(Path_SM, sFile, sizeof sFile, g_sDownloadsPath);
+    File hFile = OpenFile(sFile, "rt");
 
     if(hFile != null) {
         while(ReadFileLine(hFile, sBuffer, sizeof sBuffer)) {
@@ -173,7 +174,7 @@ public void OnMapStart() {
                     PrecacheDecal(sBuffer, true);
                     AddFileToDownloadsTable(sBufferFull);
                 }else{
-                    PrintToServer("[OS] File does not exist, check your path to overlay! %s", sBufferFull);
+                    PrintToServer("[CheckCheats] File does not exist, check your path to overlay! %s", sBufferFull);
                 }
             }
         }
@@ -208,6 +209,8 @@ public void OnAllPluginsLoaded() {
         CC_PrintLog(0, 0, "BanPluginNotFound", "", "");
         SetFailState("[CheckCheats] Ban plugin not found!");
     }
+
+    CloseHandle(hSearchBB);
 }
 
 public void OnConVarChanged(ConVar convar, const char[] oldValue, const char[] newValue) {
@@ -444,6 +447,7 @@ public void MainMenu(int iClient) {
     Menu hMenu = CreateMenu(MainMenu_Handler);
 
     SetMenuTitle(hMenu, sTitle);
+
     AddMenuItem(hMenu, "0", sMainMenuFirstItem);
     AddMenuItem(hMenu, "1", sMainMenuSecondItem);
 
@@ -470,7 +474,7 @@ public int MainMenu_Handler(Menu hMenu, MenuAction mAction, int iClient, int iSl
             if(iSlot == MenuCancel_ExitBack) RedisplayAdminMenu(g_hTopMenu, iClient);
         }
 
-        case MenuAction_End: hMenu.Cancel();
+        case MenuAction_End: hMenu.Close();
     }
 }
 
@@ -539,7 +543,7 @@ public int ChoosePlayerMenu_Handler(Menu hMenu, MenuAction mAction, int iClient,
             if(iSlot == MenuCancel_ExitBack) MainMenu(iClient);
         }
 
-        case MenuAction_End: hMenu.Cancel();
+        case MenuAction_End: hMenu.Close();
     }
 }
 
@@ -582,42 +586,34 @@ public void ChooseMessengerMenu(int iClient) {
 
 public int ChooseMessengerMenu_Handler(Menu hMenu, MenuAction mAction, int iClient, int iSlot) {
     char sInfo[256], sMessage[256];
-
-    GetMenuItem(hMenu, iSlot, sInfo, sizeof sInfo);
-
+    
     switch(mAction) {
         case MenuAction_Select: {
             if(!g_bPlayerChecking[iClient]) {
-                hMenu.Cancel();
-
                 FormatEx(sMessage, sizeof sMessage, "%T", "InteractionErrorPlayer", iClient);
                 CC_PrintToChat(iClient, sMessage);
 
                 return;
             }
 
-            if(StrEqual(sInfo, "discord")) {
-                hMenu.Cancel();
+            GetMenuItem(hMenu, iSlot, sInfo, sizeof sInfo);
 
+            if(StrEqual(sInfo, "discord")) {
                 g_iMessenger[iClient] = 1;
 
                 FormatEx(sMessage, sizeof sMessage, "%T", "PlayerNotifyWriteData", iClient, "Discord");
                 CC_PrintToChat(iClient, sMessage);
             }else if(StrEqual(sInfo, "skype")) {
-                hMenu.Cancel();
-
                 g_iMessenger[iClient] = 2;
 
                 FormatEx(sMessage, sizeof sMessage, "%T", "PlayerNotifyWriteData", iClient, "Skype");
                 CC_PrintToChat(iClient, sMessage);
             }else if(StrEqual(sInfo, "refusal")) {
-                hMenu.Cancel();
-
                 if(g_iBanEnabled) CC_BanClient(iClient, 0, false);
             }
         }
 
-        case MenuAction_End: hMenu.Cancel();
+        case MenuAction_End: hMenu.Close();
     }
 }
 
@@ -709,8 +705,6 @@ public int Menu_PanelCheck_Handler(Menu hMenu, MenuAction mAction, int iClient, 
             GetMenuItem(hMenu, iSlot, sInfo, sizeof sInfo);
 
             if(!CC_IsValidClient(iClientChoose)) {
-                hMenu.Cancel();
-
                 FormatEx(sAdmin, sizeof sAdmin, "%T", "InteractionErrorAdmin", iClient);
                 CC_PrintToChat(iClient, sAdmin);
 
@@ -761,8 +755,6 @@ public int Menu_PanelCheck_Handler(Menu hMenu, MenuAction mAction, int iClient, 
             }else if(StrEqual(sInfo, "Status")) {
                 g_iPlayerInfo[iClient].StatusCheck++;
             }else if(StrEqual(sInfo, "GoodResult")) {
-                hMenu.Cancel();
-
                 FormatEx(sPlayer, sizeof sPlayer, "%T", "PlayerCheatsNotFound", iClientChoose);
                 FormatEx(sAdmin, sizeof sAdmin, "%T", "PlayerCheatsNotFoundAdmin", iClient);
 
@@ -778,8 +770,6 @@ public int Menu_PanelCheck_Handler(Menu hMenu, MenuAction mAction, int iClient, 
                 CC_PrintToChat(iClientChoose, sPlayer);
                 CC_PrintToChat(iClient, sAdmin);
             }else if(StrEqual(sInfo, "BadResult")) {
-                hMenu.Cancel();
-
                 FormatEx(sPlayer, sizeof sPlayer, "%T", "PlayerCheatsFound", iClientChoose);
                 FormatEx(sAdmin, sizeof sAdmin, "%T", "PlayerCheatsFoundAdmin", iClient);
 
@@ -798,7 +788,7 @@ public int Menu_PanelCheck_Handler(Menu hMenu, MenuAction mAction, int iClient, 
             }
         }
 
-        case MenuAction_End: hMenu.Cancel();
+        case MenuAction_End: hMenu.Close();
     }
 }
 
@@ -812,6 +802,7 @@ public void ShowInformationPanel(int iClient) {
     FormatEx(sThirdItem, sizeof sThirdItem, "%T", "InfoThirdItem", iClient);
 
     SetPanelTitle(hPanel, sTitle);
+
     SetPanelCurrentKey(hPanel, 1);
     DrawPanelText(hPanel, sFirstItem);
     SetPanelCurrentKey(hPanel, 2);
@@ -820,6 +811,8 @@ public void ShowInformationPanel(int iClient) {
     DrawPanelItem(hPanel, sThirdItem);
 
     SendPanelToClient(hPanel, iClient, ShowInformationPanel_Handler, MENU_TIME_FOREVER);
+	
+	hPanel.Close();
 }
 
 public int ShowInformationPanel_Handler(Handle hPanel, MenuAction mAction, int iClient, int iSlot) {
@@ -836,8 +829,6 @@ public void MakeVerify(int iClient, int iClientChoose) {
     FormatEx(sSkype, sizeof sSkype, "%T", "PlayerNotifyWriteData", iClientChoose, "Skype");
     FormatEx(sDiscord, sizeof sDiscord, "%T", "PlayerNotifyWriteData", iClientChoose, "Discord");
     FormatEx(sAll, sizeof sAll, "%T", "ChooseMessengerText", iClientChoose);
-
-    PrintToServer("%i", g_iWaitTime);
 
 	strcopy(g_iPlayerInfo[iClient].ActionSelect, 100, "CheckCheats");
     g_iWaitMessengerTime[iClientChoose] = GetTime() + g_iWaitTime;
